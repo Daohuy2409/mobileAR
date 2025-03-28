@@ -1,7 +1,6 @@
 package com.example.mobilear.securingweb;
 
 import com.example.mobilear.jwt.JwtAuthenticationFilter;
-import com.example.mobilear.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
