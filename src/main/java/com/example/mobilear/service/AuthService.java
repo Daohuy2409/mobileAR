@@ -37,10 +37,7 @@ public class AuthService {
         DocumentReference documentReference =  db.collection(Collection_Name).document(username);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot document = future.get();
-        if (document.exists()) {
-            return true;
-        }
-        return false;
+        return document.exists();
     }
     public EHttpStatus checkLogin(Account account) throws ExecutionException, InterruptedException {
         Firestore db = FirestoreClient.getFirestore();
@@ -66,7 +63,7 @@ public class AuthService {
         Iterator<DocumentReference> iterator = documentReferences.iterator();
 
         List<Account> accountList = new ArrayList<>();
-        Account account = null;
+        Account account;
         while(iterator.hasNext()) {
             DocumentReference documentReference = iterator.next();
             ApiFuture<DocumentSnapshot> future = documentReference.get();

@@ -1,6 +1,5 @@
 package com.example.mobilear.service;
 
-import com.example.mobilear.entity.Account;
 import com.example.mobilear.entity.UserDetails;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.Firestore;
