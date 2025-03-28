@@ -13,6 +13,7 @@ public enum EHttpStatus {
     USERNAME_NOT_FOUND(305, "Không tồn tại username"), // 🔹 Thêm trạng thái cho không tồn tại username
     INCORRECT_PASSWORD(306, "Sai mật khẩu"),
     NO_RESULT_FOUND(307, "Không tồn tại kết quả tìm kiếm"),
+    USERNAME_ALREADY_EXISTS(310, "Tài khoản đã tồn tại"), // 🔹 Thêm trạng thái cho tài khoản đã tồn tại
     STATUS_312(312, "message"),
     BAD_REQUEST(400, "Yêu cầu này bị lỗi"),
     UNAUTHORIZED(401, "Không có quyền"),

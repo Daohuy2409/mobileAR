@@ -1,6 +1,8 @@
 package com.example.mobilear.securingweb;
 
 import com.example.mobilear.jwt.JwtAuthenticationFilter;
+import com.example.mobilear.service.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,19 +16,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+
+    @Autowired
+    public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, AuthService authService) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/auth/register").permitAll() // Cho phép truy cập không cần JWT
+                        .requestMatchers("/auth/login", "auth/checkAccount", "/auth/register").permitAll() // Cho phép truy cập không cần JWT
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // Xác thực JWT
 
         return http.build();
     }

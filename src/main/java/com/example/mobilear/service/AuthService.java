@@ -19,30 +19,28 @@ import java.util.concurrent.ExecutionException;
 public class AuthService {
     private static final String Collection_Name = "Account";
 
-    public String saveAccount(Account account) throws ExecutionException, InterruptedException {
+    public boolean saveAccount(Account account) throws ExecutionException, InterruptedException {
 
         Firestore db = FirestoreClient.getFirestore();
 
         ApiFuture<WriteResult> collectionApifuture = db.collection(Collection_Name).document(account.getUsername()).set(account);
 
-        return collectionApifuture.get().getUpdateTime().toString();
+        System.out.println(collectionApifuture.get().getUpdateTime());
+        collectionApifuture.get();
+        return true;
     }
 
-    public Account getAccount(String username) throws ExecutionException, InterruptedException {
+    public boolean checkAccount(String username) throws ExecutionException, InterruptedException {
 
         Firestore db = FirestoreClient.getFirestore();
 
         DocumentReference documentReference =  db.collection(Collection_Name).document(username);
-
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot document = future.get();
-
         if (document.exists()) {
-            return document.toObject(Account.class);
-        } else {
-            System.out.println("No such document!");
-            return null;
+            return true;
         }
+        return false;
     }
     public EHttpStatus checkLogin(Account account) throws ExecutionException, InterruptedException {
         Firestore db = FirestoreClient.getFirestore();
