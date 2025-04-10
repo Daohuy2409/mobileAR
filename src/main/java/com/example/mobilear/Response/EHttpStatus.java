@@ -21,7 +21,8 @@ public enum EHttpStatus {
     METHOD_NOT_ALLOWED(405, "Phương thức không được phép"),
     UNSUPPORTED_MEDIA_TYPE(415, "Không hỗ trợ kiểu media này"),
     REQUESTED_RANGE_NOT_SATISFIABLE(416, "Phạm vi yêu cầu không thỏa mãn"),
-    INTERNAL_SERVER_ERROR(500, "Lỗi máy chủ nội bộ");
+    INTERNAL_SERVER_ERROR(500, "Lỗi máy chủ nội bộ"),
+    DATABASE_ERROR(501, "Lỗi cơ sở dữ liệu");
 
     private final int code;
     private final String message;
