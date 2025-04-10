@@ -2,15 +2,10 @@ package com.example.mobilear.controller;
 
 import com.example.mobilear.Response.EHttpStatus;
 import com.example.mobilear.Response.Response;
-import com.example.mobilear.entity.Model3D;
 import com.example.mobilear.jwt.JwtTokenProvider;
-import com.example.mobilear.service.FileUploadService;
 import com.example.mobilear.service.ModelInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/modelInfo")

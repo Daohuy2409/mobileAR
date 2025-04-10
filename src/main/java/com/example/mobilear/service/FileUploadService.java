@@ -1,24 +1,19 @@
 package com.example.mobilear.service;
 
 import com.example.mobilear.firebase.FirebaseInitialization;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.Firestore;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 @Service
 public class FileUploadService {
     private final FirebaseInitialization firebaseInitialization;
 
-    public FileUploadService(FirebaseInitialization firebaseInitialization, Firestore firestore) {
+    public FileUploadService(FirebaseInitialization firebaseInitialization) {
         this.firebaseInitialization = firebaseInitialization;
     }
 
