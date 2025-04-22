@@ -27,7 +27,8 @@ public class WebSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "auth/checkAccount", "/auth/register").permitAll() // Cho phép truy cập không cần JWT
+                        .requestMatchers("/auth/login", "auth/checkAccount", "/auth/register",
+                                "/modelInfo/addModelInfo", "/modelInfo/getModelByCategory").permitAll() // Cho phép truy cập không cần JWT
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

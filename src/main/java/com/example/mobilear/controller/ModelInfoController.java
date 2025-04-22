@@ -1,10 +1,11 @@
 package com.example.mobilear.controller;
 
 import com.example.mobilear.Response.EHttpStatus;
-import com.example.mobilear.Response.Response;
+import com.example.mobilear.entity.Model3D;
 import com.example.mobilear.jwt.JwtTokenProvider;
 import com.example.mobilear.service.ModelInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,35 +21,48 @@ public class ModelInfoController {
     }
 
     @GetMapping("getAllModels")
-    public Response<?> getAllModels() {
+    public ResponseEntity<?> getAllModels() {
         try {
-            return new Response<>(EHttpStatus.OK, modelInfoService.getAllModels());
+            return ResponseEntity.ok(modelInfoService.getAllModels());
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            return new Response<>(EHttpStatus.INTERNAL_SERVER_ERROR, "An error occurred: " + e.getMessage());
+            return ResponseEntity.status(EHttpStatus.INTERNAL_SERVER_ERROR.getCode())
+                    .body("An error occurred: " + e.getMessage());
         }
     }
 
     @GetMapping("/getModelByCategory")
-    public Response<?> getModelByCategory(@RequestParam String category) {
+    public ResponseEntity<?> getModelByCategory(@RequestParam String category) {
         try {
-            return new Response<>(EHttpStatus.OK, modelInfoService.getModelByCategory(category));
+            return ResponseEntity.ok(modelInfoService.getModelByCategory(category));
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            return new Response<>(EHttpStatus.INTERNAL_SERVER_ERROR, "An error occurred: " + e.getMessage());
+            return ResponseEntity.status(EHttpStatus.INTERNAL_SERVER_ERROR.getCode())
+                    .body("An error occurred: " + e.getMessage());
         }
     }
 
     @GetMapping("/getPersonalModels")
-    public Response<?> getPersonalModels(@RequestHeader("Authorization") String authHeader) {
-
+    public ResponseEntity<?> getPersonalModels(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.substring(7);
         String username = jwtTokenProvider.getUsernameFromJwt(token);
         try {
-            return new Response<>(EHttpStatus.OK, modelInfoService.getPersonalModels(username));
+            return ResponseEntity.ok(modelInfoService.getPersonalModels(username));
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            return new Response<>(EHttpStatus.INTERNAL_SERVER_ERROR, "An error occurred: " + e.getMessage());
+            return ResponseEntity.status(EHttpStatus.INTERNAL_SERVER_ERROR.getCode())
+                    .body("An error occurred: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/addModelInfo")
+    public ResponseEntity<?> addModelInfo(@RequestBody Model3D modelInfo) {
+        try {
+            return modelInfoService.addModelInfo(modelInfo);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            return ResponseEntity.status(EHttpStatus.INTERNAL_SERVER_ERROR.getCode())
+                    .body("An error occurred: " + e.getMessage());
         }
     }
 

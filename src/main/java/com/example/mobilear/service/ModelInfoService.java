@@ -4,6 +4,7 @@ import com.example.mobilear.entity.Model3D;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -66,4 +67,12 @@ public class ModelInfoService {
         return result;
     }
 
+    public ResponseEntity<?> addModelInfo(Model3D modelInfo) throws ExecutionException, InterruptedException {
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference dbCollection = db.collection(Collection_Name);
+        ApiFuture<DocumentReference> future = dbCollection.add(modelInfo);
+        DocumentReference docRef = future.get();
+
+        return ResponseEntity.ok("Model info added successfully at " + modelInfo.getCreatedAt() + " with ID: " + docRef.getId());
+    }
 }
