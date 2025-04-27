@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/modelInfo")
 public class ModelInfoController {
@@ -31,9 +33,25 @@ public class ModelInfoController {
         }
     }
 
+    @GetMapping("/getSpecialOffers")
+    public ResponseEntity<?> getSpecialOffers() {
+        try {
+            List<Model3D> specialOffers = modelInfoService.getSpecialOffers();
+            return ResponseEntity.ok(specialOffers);
+        } catch (Exception e) {
+            return ResponseEntity.status(EHttpStatus.INTERNAL_SERVER_ERROR.getCode())
+                    .body("Error fetching special offers: " + e.getMessage());
+        }
+    }
+
+
     @GetMapping("/getModelByCategory")
     public ResponseEntity<?> getModelByCategory(@RequestParam String category) {
         try {
+            if (category == null || category.isEmpty()) {
+                return ResponseEntity.status(EHttpStatus.BAD_REQUEST.getCode())
+                        .body("Category cannot be null or empty");
+            }
             return ResponseEntity.ok(modelInfoService.getModelByCategory(category));
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());

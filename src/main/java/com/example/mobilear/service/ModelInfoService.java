@@ -32,6 +32,23 @@ public class ModelInfoService {
         return models;
     }
 
+    public List<Model3D> getSpecialOffers() throws ExecutionException, InterruptedException {
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference dbCollection = db.collection(Collection_Name);
+
+        // Query lấy giới hạn số lượng document
+        ApiFuture<QuerySnapshot> future = dbCollection.limit(5).get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+
+        List<Model3D> models = new ArrayList<>();
+        for (QueryDocumentSnapshot document : documents) {
+            models.add(document.toObject(Model3D.class));
+        }
+
+        return models;
+    }
+
+
     public List<Model3D> getModelByCategory(String category)
             throws ExecutionException, InterruptedException {
 

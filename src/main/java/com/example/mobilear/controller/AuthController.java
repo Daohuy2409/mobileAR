@@ -7,10 +7,12 @@ import com.example.mobilear.entity.RegisterRequest;
 import com.example.mobilear.entity.UserDetails;
 import com.example.mobilear.jwt.JwtTokenProvider;
 import com.example.mobilear.service.AuthService;
+import com.example.mobilear.service.TokenBlackList;
 import com.example.mobilear.service.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,8 +43,21 @@ public class AuthController {
 
     }
 
+    @PostMapping("/logout")
+    public Response<?> logout(@RequestHeader("Authorization") String authHeader) {
+        try {
+            String token = authHeader.substring(7);
+            SecurityContextHolder.clearContext();
+            TokenBlackList.blacklistToken(token);
+            return new Response<>(EHttpStatus.OK, "Logout successful");
+        } catch (Exception e) {
+            return new Response<>(EHttpStatus.INTERNAL_SERVER_ERROR, "Logout failed: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/checkAccount")
     public Response<?> checkAccount(@RequestParam String username) throws ExecutionException, InterruptedException {
+        System.out.println(username);
         boolean exists = authService.checkAccount(username);
         if (exists) {
             return new Response<>(EHttpStatus.USERNAME_ALREADY_EXISTS, "Username already exists");

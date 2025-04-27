@@ -1,10 +1,12 @@
 package com.example.mobilear.jwt;
 
+import com.example.mobilear.service.TokenBlackList;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -18,6 +20,9 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private TokenBlackList tokenBlacklist;
+
     public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
@@ -30,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = authHeader.substring(7);
 
             try {
-                if (!jwtTokenProvider.validateToken(token)) {
+                if (!jwtTokenProvider.validateToken(token) || tokenBlacklist.isTokenBlacklisted(token)) {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                 }
 

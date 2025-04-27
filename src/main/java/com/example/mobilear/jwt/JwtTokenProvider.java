@@ -19,7 +19,7 @@ public class JwtTokenProvider {
 
     //Thời gian có hiệu lực của chuỗi jwt
     private static final long ONE_SECOND = 1000L;
-    private final long JWT_EXPIRATION = ONE_SECOND * 60 * 60 * 3; // 3 HOURS
+    private final long JWT_EXPIRATION = ONE_SECOND * 60 * 30; // 30 minutes
 
     // Tạo ra jwt từ thông tin user
     public String generateToken(Account account) {
