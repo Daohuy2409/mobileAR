@@ -16,6 +16,15 @@ import java.util.concurrent.ExecutionException;
 public class ModelInfoService {
     private static final String Collection_Name = "Model3D";
 
+    public Model3D getModelById(String modelId) throws ExecutionException, InterruptedException {
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference dbCollection = db.collection(Collection_Name);
+        DocumentReference docRef = dbCollection.document(modelId);
+        ApiFuture<DocumentSnapshot> future = docRef.get();
+        DocumentSnapshot document = future.get();
+        return document.toObject(Model3D.class);
+    }
+
     public List<Model3D> getAllModels() throws ExecutionException, InterruptedException {
         Firestore db = FirestoreClient.getFirestore();
         CollectionReference dbCollection = db.collection(Collection_Name);

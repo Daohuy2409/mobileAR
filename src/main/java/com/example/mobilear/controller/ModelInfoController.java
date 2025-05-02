@@ -22,6 +22,21 @@ public class ModelInfoController {
         this.modelInfoService = modelInfoService;
     }
 
+    @GetMapping("/getModelById")
+    public ResponseEntity<?> getModelById(@RequestParam String modelId) {
+        try {
+            if (modelId == null || modelId.isEmpty()) {
+                return ResponseEntity.status(EHttpStatus.BAD_REQUEST.getCode())
+                        .body("Model ID cannot be null or empty");
+            }
+            return ResponseEntity.ok(modelInfoService.getModelById(modelId));
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            return ResponseEntity.status(EHttpStatus.INTERNAL_SERVER_ERROR.getCode())
+                    .body("An error occurred: " + e.getMessage());
+        }
+    }
+
     @GetMapping("getAllModels")
     public ResponseEntity<?> getAllModels() {
         try {
