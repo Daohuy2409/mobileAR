@@ -68,4 +68,16 @@ public class RoomInfoService {
             return ResponseEntity.status(500).body("Error deleting model: " + e.getMessage());
         }
     }
+
+    public ResponseEntity<?> getAllRoomsByUser(String userId) {
+        // Implement the logic to get all rooms by user
+        Firestore db = FirestoreClient.getFirestore();
+        CollectionReference dbCollection = db.collection(Collection_Name);
+
+        try {
+            return ResponseEntity.ok(dbCollection.whereEqualTo("createdBy", userId).get().get().toObjects(RoomInfo.class));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching rooms: " + e.getMessage());
+        }
+    }
 }
